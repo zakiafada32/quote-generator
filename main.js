@@ -15,7 +15,6 @@ function loading() {
 }
 
 // hide loader
-
 function complete() {
   if (!loader.hidden) {
     // false
@@ -70,20 +69,46 @@ function tweetQuote() {
 }
 
 function addfav() {
-  const key = quoteText.innerText;
-  const value = authorText.innerText;
+  const quote = quoteText.innerText;
+  const author = authorText.innerText;
 
-  if (key && value) {
-    localStorage.setItem(key, value);
-    location.reload();
+  let favQuote = {
+    author: author,
+    quote: quote,
+  };
+
+  if (localStorage.getItem('quotes-generator') === null) {
+    let quotes = [];
+    quotes.push(favQuote);
+    localStorage.setItem('quotes-generator', JSON.stringify(quotes));
+  } else {
+    let quotes = JSON.parse(localStorage.getItem('quotes-generator'));
+    quotes.push(favQuote);
+    localStorage.setItem('quotes-generator', JSON.stringify(quotes));
   }
+  location.reload();
 }
 
-for (let i = 0; i < localStorage.length; i++) {
-  const key = localStorage.key(i);
-  const value = localStorage.getItem(key);
+function deleteFavQuote(favQuote) {
+  let quotes = JSON.parse(localStorage.getItem('quotes-generator'));
 
-  lsOutput.innerHTML += `${key} : ${value}<br /> <br />`;
+  quotes.forEach((quote, idx) => {
+    if (quote.quote === favQuote) {
+      quotes.splice(idx, 1);
+    }
+  });
+
+  localStorage.setItem('quotes-generator', JSON.stringify(quotes));
+  fetchFavQuote();
+}
+
+function fetchFavQuote() {
+  let quotes = JSON.parse(localStorage.getItem('quotes-generator'));
+
+  lsOutput.innerHTML = '';
+  quotes.forEach((quote) => {
+    lsOutput.innerHTML += `${quote.author} : ${quote.quote} <button class="delete-button" onclick="deleteFavQuote('${quote.quote}')">X</button><br /> <br />`;
+  });
 }
 
 //Event Listners
@@ -93,3 +118,4 @@ favBtn.addEventListener('click', addfav);
 
 // on load
 getQuote();
+fetchFavQuote();
