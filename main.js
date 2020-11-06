@@ -6,7 +6,6 @@ const newQuoteBtn = document.getElementById('new-quote');
 const favBtn = document.getElementById('favorite');
 const lsOutput = document.getElementById('lsoutput');
 const loader = document.getElementById('loader');
-const dev = '@chowkidarnot';
 
 // show loading
 function loading() {
@@ -64,11 +63,11 @@ async function getQuote() {
 function tweetQuote() {
   const quote = quoteText.innerText;
   const author = authorText.innerText;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${quote} - ${author} - ${dev} `;
+  const twitterUrl = `https://twitter.com/intent/tweet?text=${quote} - ${author}`;
   window.open(twitterUrl, '_blank');
 }
 
-function addfav() {
+function addFav() {
   const quote = quoteText.innerText;
   const author = authorText.innerText;
 
@@ -114,7 +113,7 @@ function fetchFavQuote() {
 //Event Listners
 newQuoteBtn.addEventListener('click', getQuote);
 twitterBtn.addEventListener('click', tweetQuote);
-favBtn.addEventListener('click', addfav);
+favBtn.addEventListener('click', addFav);
 
 // on load
 getQuote();
